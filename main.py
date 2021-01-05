@@ -1,15 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-
-
-df = pd.read_fwf('HC_Body_Temperature.txt')
-# get 0-3 columns in jumps of 2
-X = df.iloc[:, 0:3:2].to_numpy()
-y = df.iloc[:, 1].to_numpy()
-# split the data into train and test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5)
-
+from termcolor import colored
 
 
 def euclidean_distance(a,b):
@@ -67,15 +59,40 @@ class KNN:
         return np.sum(pred==y_test) / y_test.shape[0]
 
 
-for k in range(1, 10, 2):
-    knn2 = KNN(n_neighbors=k)
-    knn2.fit(X_train, y_train)
-    # pred2 = knn2.predict(X_test, 3)
-
-    print("----------------------------------\nk : ", k)
-    print("score train: {}".format(knn2.score(X_train, y_train, 3)))
-    print("score test: {}".format(knn2.score(X_test, y_test, 3)))
 
 
+
+def main():
+    for k in range(1, 10, 2):
+        print(colored(("------------------------------   k : {}  ------------------------------".format(k)), 'red'))
+        for lp in range(1, 4):
+            sum_test=0
+            sum_train=0
+            for i in range(100):
+                # split the data
+                df = pd.read_fwf('HC_Body_Temperature.txt')
+                # get 0-3 columns in jumps of 2
+                X = df.iloc[:, 0:3:2].to_numpy()
+                y = df.iloc[:, 1].to_numpy()
+                # split the data into train and test
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5)
+
+                # initiate the object
+                knn2 = KNN(n_neighbors=k)
+                knn2.fit(X_train, y_train)
+                # pred2 = knn2.predict(X_test, 3)
+
+                # print the statistics
+                sum_train += knn2.score(X_train, y_train, lp)
+                sum_test += knn2.score(X_test, y_test, lp)
+
+            print("lp : {}  score train: {} score test: {}".format(lp, sum_train/100, sum_test/100))
+
+    # for i in range(1, 4):
+    #     print(i)
+# print("----------------------------------\nk : ", k)
+# print("score train: {}".format(knn2.score(X_train, y_train, lp)))
+# print("score test: {}".format(knn2.score(X_test, y_test, lp)))
 # Press the green button in the gutter to run the script.
-# if _name_ == '_main_':
+if __name__ == '__main__':
+    main()
