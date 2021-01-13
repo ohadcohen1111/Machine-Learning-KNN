@@ -88,11 +88,6 @@ def main():
 
             print("lp : {}  score train: {} score test: {}".format(lp, sum_train/100, sum_test/100))
 
-    # for i in range(1, 4):
-    #     print(i)
-# print("----------------------------------\nk : ", k)
-# print("score train: {}".format(knn2.score(X_train, y_train, lp)))
-# print("score test: {}".format(knn2.score(X_test, y_test, lp)))
-# Press the green button in the gutter to run the script.
+            
 if __name__ == '__main__':
     main()
